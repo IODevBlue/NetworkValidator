@@ -1,5 +1,5 @@
 plugins {
-    id 'com.android.library'
+    id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
 }
 
@@ -7,11 +7,13 @@ android {
     compileSdk 32
 
     defaultConfig {
-        minSdk 21
+        applicationId "com.blueiobase.api.android.networkvalidator.sample"
+        minSdk 23
         targetSdk 32
+        versionCode 1
+        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -27,10 +29,11 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-
 }
 
 dependencies {
+
+    implementation project(':library')
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.7.0'

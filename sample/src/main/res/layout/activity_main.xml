@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.blueiobase.api.android.networkvalidator.sample.MainActivity"
+    >
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/main_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:theme="@style/Theme.NetworkValidator.AppBarOverlay"
+        >
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/Theme.NetworkValidator.PopupOverlay">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/app_name"
+                android:textColor="@color/white"
+                />
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <TextView
+        android:id="@+id/text_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:fontFamily="serif-monospace"
+        android:textColor="@color/black"
+        android:text="@string/iodevblue"
+        />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_loading"
+        android:layout_centerInParent="true"
+        android:paddingTop="5dp"
+        android:indeterminate="true"
+        style="?android:attr/progressBarStyleHorizontal"
+        />
+    <TextView
+        android:id="@+id/wifi_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="serif-monospace"
+        android:layout_marginTop="200dp"
+        android:layout_marginStart="50dp"
+        android:layout_alignParentStart="true"
+        android:text="@string/wifi"
+        android:textColor="@color/black"
+        />
+
+    <ImageView
+        android:id="@+id/wifi_iv"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="200dp"
+        android:contentDescription="@string/image_view"
+        android:src="@drawable/circle_bg"
+        app:tint="@color/green" />
+
+    <TextView
+        android:id="@+id/mobile_data_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="serif-monospace"
+        android:text="@string/mobile_data"
+        android:textColor="@color/black"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/wifi_tv"
+        />
+
+    <ImageView
+        android:id="@+id/mobile_data_iv"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:contentDescription="@string/image_view"
+        android:src="@drawable/circle_bg"
+        android:layout_below="@id/wifi_iv"
+        app:tint="@color/green"
+        />
+
+    <TextView
+        android:id="@+id/airplane_mode_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mobile_data_tv"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="serif-monospace"
+        android:text="@string/airplane_mode"
+        android:textColor="@color/black" />
+
+    <ImageView
+        android:id="@+id/airplane_mode_iv"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:contentDescription="@string/image_view"
+        android:src="@drawable/circle_bg"
+        android:layout_below="@id/mobile_data_iv"
+        app:tint="@color/green"
+        />
+
+    <ImageButton
+        android:id="@+id/github_button"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="50dp"
+        android:layout_marginEnd="25dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:contentDescription="@string/image_button"
+        android:src="@drawable/ic_github"
+        android:background="@drawable/circle_bg"
+        />
+</RelativeLayout>
