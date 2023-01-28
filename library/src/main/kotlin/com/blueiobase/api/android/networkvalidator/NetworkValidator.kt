@@ -1,6 +1,9 @@
 package com.blueiobase.api.android.networkvalidator
 
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
@@ -9,31 +12,18 @@ import android.provider.Settings
 import android.telephony.TelephonyManager
 
 /**
- * This class handles the logic behind retrieving current network state.
+ * This class handles the logic behind retrieving current network state and monitoring airplane mode changes.
  * @author IO DevBlue.
  * @since 1.0.0
  */
 class NetworkValidator(private val context: Context) {
 
-    /** Interface containing callbacks to monitor changes in network state. */
-    interface OnNetworkChangedListener {
-
-        /**
-         * Callback for network connectivity state.
-         *
-         * **NOTE:** This function is invoked on a separate background [Thread] on the Android OS. Therefore,
-         * All User Interface operations are **NOT** to be executed in this function without explicitly
-         * switching to a UI [Thread].
-         * @param isOnline `true` if there is network, `false` if otherwise.
-         * @param network The [Network] identifier.
-         */
-        fun onNetworkChanged(isOnline: Boolean, network: Network)
-    }
-
     /** Android network [ConnectivityManager]. */
     private val connectivityManager by lazy { context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager }
     /** Android [TelephonyManager]. */
     private val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+    /** [BroadcastReceiver] for airplane modes. */
+    private var airplaneModeReceiver: AirplaneModeReceiver? = null
 
     /**
      * Listener for Network state changes.
@@ -44,6 +34,18 @@ class NetworkValidator(private val context: Context) {
             field = value
             value?.let {
                 addCapabilities()
+            }
+        }
+
+    /** Listener for airplane mode changes. */
+    var onAirplaneModeSwitchListener: OnAirplaneModeSwitchListener? = null
+        set(value) {
+            field = value
+            airplaneModeReceiver = if(value != null) {
+                AirplaneModeReceiver()
+            } else {
+                airplaneModeReceiver?.unregister()
+                null
             }
         }
 
@@ -92,11 +94,21 @@ class NetworkValidator(private val context: Context) {
      */
     fun isAirplaneModeActive() =  Settings.Global.getInt(context.contentResolver, Settings.Global.AIRPLANE_MODE_ON, 0) != 0
 
+    /** Unregisters the [OnAirplaneModeSwitchListener] from listening for airplane mode events. */
+    fun unregisterAirplaneModeSwitchListener() {
+        airplaneModeReceiver?.unregister()
+    }
+
+    /** Registers the [OnAirplaneModeSwitchListener] to start listening for airplane mode events. */
+    fun registerAirplaneModeSwitchListener() {
+        airplaneModeReceiver?.register()
+    }
+
     /**
      * Sets a network change listener.
      *
-     * **NOTE:** The [execute] lambda receiver function is invoked on a separate background [Thread]
-     * on the Android OS. All User Interface operations are **NOT** to be run in the [execute] function without explicitly switching to a UI [Thread].
+     * **NOTE:** The [execute] lambda receiver function is invoked on a separate background [Thread] on the Android OS.
+     * All User Interface operations are **NOT** to be run in the [execute] function without explicitly switching to a UI [Thread].
      * @param execute Lambda receiver function executed on network change.
      */
     fun setOnNetworkStateChangedListener(execute: OnNetworkChangedListener.(Boolean, Network) -> Unit) {
@@ -106,6 +118,23 @@ class NetworkValidator(private val context: Context) {
             }
         }
         onNetworkChangedListener = x
+    }
+
+    /**
+     * Sets an airplane mode switch listener.
+     *
+     * **NOTE:** The [execute] lambda receiver function is invoked on a separate background [Thread] on the Android OS.
+     * All User Interface operations are **NOT** to be run in the [execute] function without explicitly switching to a UI [Thread].
+     * @param execute Lambda receiver function executed on network change.
+     */
+    fun setOnAirplaneModeSwitchListener(execute: OnAirplaneModeSwitchListener.(Boolean) -> Unit) {
+        val x = object: OnAirplaneModeSwitchListener {
+            override fun onChanged(turnedOn: Boolean) {
+                execute(turnedOn)
+            }
+        }
+        onAirplaneModeSwitchListener = x
+        airplaneModeReceiver = AirplaneModeReceiver()
     }
 
     /** Adds [NetworkCapabilities] to the [NetworkRequest.Builder]. */
@@ -128,5 +157,68 @@ class NetworkValidator(private val context: Context) {
             }
         }
         connectivityManager.registerNetworkCallback(builder.build(), callback)
+    }
+
+
+
+    //******************** INTERFACES ********************//
+    /** Interface containing callbacks to monitor changes in network state. */
+    interface OnNetworkChangedListener {
+
+        /**
+         * Callback for network connectivity state.
+         *
+         * **NOTE:** This function is invoked on a separate background [Thread] on the Android OS. Therefore,
+         * All User Interface operations are **NOT** to be executed in this function without explicitly
+         * switching to a UI [Thread].
+         * @param isOnline `true` if there is network, `false` if otherwise.
+         * @param network The [Network] identifier.
+         */
+        fun onNetworkChanged(isOnline: Boolean, network: Network)
+    }
+
+    /** Interface containing callbacks to monitor changes in airplane mode. */
+    interface OnAirplaneModeSwitchListener {
+        /**
+         * Callback for airplane mode changes.
+         *
+         * **NOTE:** This function is invoked on a separate background [Thread] on the Android OS. Therefore,
+         * All User Interface operations are **NOT** to be executed in this function without explicitly
+         * switching to a UI [Thread].
+         * @param turnedOn `true` if airplane mode is switched on, `false` if otherwise.
+         */
+        fun onChanged(turnedOn: Boolean)
+    }
+
+
+
+    //******************** CLASSES ********************//
+    /**  Internal [BroadcastReceiver] handling listening to airplane mode events. */
+    private inner class AirplaneModeReceiver: BroadcastReceiver() {
+
+        init {
+            register()
+        }
+
+        override fun onReceive(p0: Context?, p1: Intent?) {
+            if(Settings.System.getInt(context.contentResolver, Settings.Global.AIRPLANE_MODE_ON, 0) == 0) {
+                onAirplaneModeSwitchListener?.onChanged(false)
+            } else {
+                onAirplaneModeSwitchListener?.onChanged(true)
+            }
+        }
+
+        /** Registers this [AirplaneModeReceiver] to receive changes to airplane mode. */
+        fun register() {
+            IntentFilter().apply {
+                addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED)
+                context.registerReceiver(this@AirplaneModeReceiver, this)
+            }
+        }
+
+        /** Unregisters this [AirplaneModeReceiver] from receiving changes to airplane mode. */
+        fun unregister() {
+            context.unregisterReceiver(this)
+        }
     }
 }

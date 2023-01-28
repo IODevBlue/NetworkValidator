@@ -14,6 +14,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import com.blueiobase.api.android.networkvalidator.NetworkValidator
 import com.blueiobase.api.android.networkvalidator.networkValidator
 
 class MainActivity : AppCompatActivity() {
@@ -24,10 +25,14 @@ class MainActivity : AppCompatActivity() {
     private val wifiIv: ImageView by lazy { findViewById(R.id.wifi_iv) }
     private val mobileDataIv: ImageView by lazy { findViewById(R.id.mobile_data_iv) }
     private val airplaneModeIv: ImageView by lazy { findViewById(R.id.airplane_mode_iv) }
-    private val repoLink = "https://github.com/IODevBlue/NetworkValidator"
+
     private val progressAnim by lazy { progress.animate() }
+
     private val thread = HandlerThread("Waiting Thread")
     private val handler by lazy { Handler(Looper.getMainLooper()) }
+    private var validator: NetworkValidator? = null
+
+    private val repoLink = "https://github.com/IODevBlue/NetworkValidator"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,20 +44,40 @@ class MainActivity : AppCompatActivity() {
         }
         thread.start()
         networkValidator {
-            setOnNetworkStateChangedListener { b, _ ->
-                runOnUiThread {
-                    tv.text = resources.getString(R.string.detect_network)
-                    showProgress()
-                    handler.postDelayed(
-                        {
-                            hideProgress()
-                            updateNetworkState(b)
-                            changeColorWifi(isWifiAvailable())
-                            changeColorMobileData(isCellularAvailable())
-                            changeColorAirplaneMode(isAirplaneModeActive())
-                        }, 1500)
-                }
+            evaluateCurrentNetwork(this@networkValidator, isOnline())
+            setOnNetworkStateChangedListener { isOnline, _ ->
+                evaluateCurrentNetwork(this@networkValidator, isOnline)
             }
+
+            setOnAirplaneModeSwitchListener {
+                evaluateCurrentNetwork(this@networkValidator, false)
+            }
+            validator = this
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        validator?.registerAirplaneModeSwitchListener()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        validator?.unregisterAirplaneModeSwitchListener()
+    }
+
+    private fun evaluateCurrentNetwork(netVal: NetworkValidator, bool: Boolean) {
+        runOnUiThread {
+            tv.text = resources.getString(R.string.detect_network)
+            showProgress()
+            handler.postDelayed(
+                {
+                    hideProgress()
+                    updateNetworkState(bool)
+                    changeColorWifi(netVal)
+                    changeColorMobileData(netVal)
+                    changeColorAirplaneMode(netVal)
+                }, 1500)
         }
     }
 
@@ -78,24 +103,24 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun changeColorMobileData(bool: Boolean) {
-        if (bool) {
+    private fun changeColorMobileData(netVal: NetworkValidator) {
+        if (netVal.isCellularAvailable()) {
             DrawableCompat.wrap(mobileDataIv.drawable).setTint(ContextCompat.getColor(this, R.color.green))
         } else {
             DrawableCompat.wrap(mobileDataIv.drawable).setTint(ContextCompat.getColor(this, R.color.red))
         }
     }
 
-    private fun changeColorWifi(bool: Boolean) {
-        if (bool) {
+    private fun changeColorWifi(netVal: NetworkValidator) {
+        if (netVal.isWifiAvailable()) {
             DrawableCompat.wrap(wifiIv.drawable).setTint(ContextCompat.getColor(this, R.color.green))
         } else {
             DrawableCompat.wrap(wifiIv.drawable).setTint(ContextCompat.getColor(this, R.color.red))
         }
     }
 
-    private fun changeColorAirplaneMode(bool: Boolean) {
-        if (bool) {
+    private fun changeColorAirplaneMode(netVal: NetworkValidator) {
+        if (netVal.isAirplaneModeActive()) {
             DrawableCompat.wrap(airplaneModeIv.drawable).setTint(ContextCompat.getColor(this, R.color.green))
         } else {
             DrawableCompat.wrap(airplaneModeIv.drawable).setTint(ContextCompat.getColor(this, R.color.red))

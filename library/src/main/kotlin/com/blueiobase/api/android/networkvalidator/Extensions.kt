@@ -18,9 +18,22 @@ fun Context.networkValidator(init: NetworkValidator.() -> Unit): NetworkValidato
  * Extension function on a [Context] to directly listen for network changes.
  * @param exec Function executed on network changes.
  */
-fun Context.listenForNetwork(exec:(Boolean, Network) -> Unit){
+fun Context.listenForNetwork(exec:(Boolean, Network) -> Unit) {
     val nv = NetworkValidator(this)
     nv.setOnNetworkStateChangedListener { b, network ->
         exec(b, network)
     }
+}
+
+/**
+ * Extension function on a [Context] to directly listen for airplane mode changes
+ * @param exec Function executed on airplane mode changes.
+ * @return A valid [NetworkValidator] instance.
+ */
+fun Context.listenForAirplaneModeChanges(exec: (Boolean) -> Unit): NetworkValidator {
+    val nv = NetworkValidator(this)
+    nv.setOnAirplaneModeSwitchListener {
+        exec(it)
+    }
+    return nv
 }

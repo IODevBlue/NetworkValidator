@@ -10,7 +10,7 @@ Contributing
 
 Current tasks to be completed
 -----------------------------
-- [ ] Airplane mode listener
+- [x] Airplane mode listener
 - [ ] NetworkValidator for LiveData
 - [ ] NetworkValidator for ReactiveX
 
