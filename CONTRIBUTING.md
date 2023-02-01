@@ -10,9 +10,9 @@ Contributing
 
 Current tasks to be completed
 -----------------------------
-- [x] Airplane mode listener
 - [ ] NetworkValidator for LiveData
 - [ ] NetworkValidator for ReactiveX
+- [x] Airplane mode listener
 
 - Have a new feature in mind?
 - Want to make changes and improvements to documentations and code?

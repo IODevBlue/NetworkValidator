@@ -36,7 +36,7 @@ android {
     }
 }
 
-def releaseVersion = '1.0.0'
+def releaseVersion = '1.0.0-SNAPSHOT'
 
 afterEvaluate {
     publishing {
@@ -98,7 +98,6 @@ afterEvaluate {
     }
 }
 
-
 dokkaHtml {
     moduleName.set("Network Validator")
     suppressInheritedMembers.set(true)
@@ -113,15 +112,33 @@ dokkaHtml {
 task androidSourcesJar(type: Jar) {
     getArchiveClassifier().set('sources')
     from android.sourceSets.main.kotlin.srcDirs
+    doLast {
+        copy {
+            from androidJavadocJar
+            into "$rootProject.projectDir/artefacts"
+        }
+    }
 }
 
 task androidJavadocJar(type: Jar, dependsOn: dokkaJavadoc) {
     getArchiveClassifier().set('javadoc')
-    from android.sourceSets.main.kotlin.srcDirs
+    from dokkaJavadoc
+    doLast {
+        copy {
+            from androidJavadocJar
+            into "$rootProject.projectDir/artefacts"
+        }
+    }
 }
 
 task androidJar(type: Jar) {
     from android.sourceSets.main.kotlin.sourceFiles
+    doLast {
+        copy {
+            from androidJavadocJar
+            into "$rootProject.projectDir/artefacts"
+        }
+    }
 }
 
 dependencies {
