@@ -114,8 +114,8 @@ task androidSourcesJar(type: Jar) {
     from android.sourceSets.main.kotlin.srcDirs
     doLast {
         copy {
-            from androidJavadocJar
-            into "$rootProject.projectDir/artefacts"
+            from androidSourcesJar
+            into "$rootProject.projectDir/artefacts/$releaseVersion"
         }
     }
 }
@@ -126,7 +126,7 @@ task androidJavadocJar(type: Jar, dependsOn: dokkaJavadoc) {
     doLast {
         copy {
             from androidJavadocJar
-            into "$rootProject.projectDir/artefacts"
+            into "$rootProject.projectDir/artefacts/$releaseVersion"
         }
     }
 }
@@ -135,8 +135,8 @@ task androidJar(type: Jar) {
     from android.sourceSets.main.kotlin.sourceFiles
     doLast {
         copy {
-            from androidJavadocJar
-            into "$rootProject.projectDir/artefacts"
+            from androidJar
+            into "$rootProject.projectDir/artefacts/$releaseVersion"
         }
     }
 }
