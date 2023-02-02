@@ -13,7 +13,7 @@ NetworkValidator provides real-time network availability and airplane mode monit
 
 Installation
 ------------
-**current-version: 1.0.0-SNAPSHOT**
+current-version: **1.0.0-SNAPSHOT**
 
 1. Grab a JAR artefact from the Maven Central Repository:
 - On Gradle
@@ -331,7 +331,7 @@ Check the [Contributing](https://github.com/IODevBlue/NetworkValidator/blob/deve
 
 Changelog
 ---------
-* **1.0.0**
+* **1.0.0-SNAPSHOT**
     * Initial release
 
 More version history can be gotten from the [Change log](https://github.com/IODevBlue/NetworkValidator/blob/main/CHANGELOG.md) file.
