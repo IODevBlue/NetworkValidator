@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Github_Projects/Android/NetworkValidator/sample/src/main/res/drawable/circle_bg.xml" value="0.143" />
+        <entry key="..\:/Github_Projects/Android/NetworkValidator/sample/src/main/res/drawable/circle_bg_red.xml" value="0.143" />
+        <entry key="..\:/Github_Projects/Android/NetworkValidator/sample/src/main/res/drawable/ic_github.xml" value="0.1015" />
+        <entry key="..\:/Github_Projects/Android/NetworkValidator/sample/src/main/res/drawable/square_bg.xml" value="0.143" />
+        <entry key="..\:/Github_Projects/Android/NetworkValidator/sample/src/main/res/drawable/square_bg_red.xml" value="0.143" />
+        <entry key="..\:/Github_Projects/Android/NetworkValidator/sample/src/main/res/layout/activity_main.xml" value="0.1" />
+      </map>
+    </option>
+  </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_15_PREVIEW" project-jdk-name="15" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>

@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Network Validator</string>
+    <string name="iodevblue">IO DevBlue</string>
+    <string name="image_button">Image Button</string>
+    <string name="image_view">ImageView</string>
+
+    <string name="detect_network">Detecting Network Change....</string>
+    <string name="network_available">Network Connection Available!</string>
+    <string name="network_unavailable">No Network Available!</string>
+
+    <string name="wifi">Wifi:</string>
+    <string name="mobile_data">Mobile Data:</string>
+    <string name="airplane_mode">Airplane Mode:</string>
+</resources>
