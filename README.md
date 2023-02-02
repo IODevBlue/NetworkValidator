@@ -2,8 +2,8 @@ NetworkValidator
 ================
 A lightweight module written in Kotlin for monitoring network state and airplane mode on native android.
 
-[<img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/IODevBlue/NetworkValidator?color=2CCCE4&style=for-the-badge&label=Current Version&labelColor=0109B6">](https://github.com/IODevBlue/NetworkValidator/releases) <img alt="Repository Size" src="https://img.shields.io/github/repo-size/IODevBlue/NetworkValidator?color=2CCCE4&style=for-the-badge"> [<img alt="License" src="https://img.shields.io/github/license/IODevBlue/NetworkValidator?color=2CCCE4&style=for-the-badge&labelColor=0109B6">](http://www.apache.org/licenses/LICENSE-2.0) [<img alt="GitHub Repository stars" src="https://img.shields.io/github/stars/IODevBlue/NetworkValidator?color=2CCCE4&style=for-the-badge&labelColor=0109B6">](https://github.com/IODevBlue/NetworkValidator/stargazers)
-<img alt="GitHub watchers" src="https://img.shields.io/github/watchers/IODevBlue/NetworkValidator?label=Repository Watchers?color=2CCCE4&style=for-the-badge&labelColor=0109B6"> [<img alt="Gradle version" src="https://img.shields.io/static/v1?label=Gradle version&message=7.5.1&color=2CCCE4&style=for-the-badge&labelColor=0109B6">](https://docs.gradle.org/7.5.1/release-notes) [<img alt="Kotlin version" src="https://img.shields.io/static/v1?label=Kotlin version&message=1.7.10&color=2CCCE4&style=for-the-badge&labelColor=0109B6">](https://KOTLINlang.org/docs/whatsnew1720)
+[<img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/IODevBlue/NetworkValidator?label=Current Version&color=2CCCE4&style=for-the-badge&labelColor=0109B6">](https://github.com/IODevBlue/NetworkValidator/releases) <img alt="Repository Size" src="https://img.shields.io/github/repo-size/IODevBlue/NetworkValidator?color=2CCCE4&style=for-the-badge&labelColor=0109B6"> [<img alt="License" src="https://img.shields.io/github/license/IODevBlue/NetworkValidator?color=2CCCE4&style=for-the-badge&labelColor=0109B6">](http://www.apache.org/licenses/LICENSE-2.0) [<img alt="GitHub Repository stars" src="https://img.shields.io/github/stars/IODevBlue/NetworkValidator?color=2CCCE4&style=for-the-badge&labelColor=0109B6">](https://github.com/IODevBlue/NetworkValidator/stargazers)
+<img alt="GitHub watchers" src="https://img.shields.io/github/watchers/IODevBlue/NetworkValidator?label=Repository Watchers&color=2CCCE4&style=for-the-badge&labelColor=0109B6"> [<img alt="Gradle version" src="https://img.shields.io/static/v1?label=Gradle version&message=7.5.1&color=2CCCE4&style=for-the-badge&labelColor=0109B6">](https://docs.gradle.org/7.5.1/release-notes) [<img alt="Kotlin version" src="https://img.shields.io/static/v1?label=Kotlin version&message=1.7.10&color=2CCCE4&style=for-the-badge&labelColor=0109B6">](https://KOTLINlang.org/docs/whatsnew1720)
 
 Uses
 ----
@@ -13,17 +13,19 @@ NetworkValidator provides real-time network availability and airplane mode monit
 
 Installation
 ------------
+**current-version: 1.0.0-SNAPSHOT**
+
 1. Grab a JAR artefact from the Maven Central Repository:
 - On Gradle
 ```GROOVY
-implementation 'io.github.iodevblue:networkvalidator:version'
+implementation 'io.github.iodevblue:networkvalidator:current-version'
 ```
 - On Apache Maven
 ```XML
 <dependency>
   <groudId> io.github.iodevblue </groudId>
   <artifactId> parallaxnavigationdrawer </artifactId>
-  <version> version </version>
+  <version> current-version </version>
 </dependency>
 ```
 If it is a snapshot version, add the snapshot Maven Nexus OSS repository:
@@ -34,7 +36,7 @@ maven {
 ```
 Then retrieve a copy:
 ```GROOVY
-implementation 'io.github.iodevblue:parallaxnavigationdrawer:version'
+implementation 'io.github.iodevblue:parallaxnavigationdrawer:current-version'
 ```
 
 2. Grab a JAR or AAR artifact from the [release](https://github.com/IODevBlue/ParallaxNavigationDrawer/releases) section.
@@ -235,9 +237,9 @@ Validate if there is internet connection on a device:
 boolean isOnline = networkValidator.isOnline();
 
 if(isOnline) {
-    retrieveFromRemoteRepo()
+    retrieveFromRemoteRepo();
 } else {
-    retrieveFromLocalCache()
+    retrieveFromLocalCache();
 }
 ```
 
@@ -246,31 +248,31 @@ Validate if there is internet connection through Wifi:
 boolean isWifiAvail = networkValidator.isWifiAvailable();
 
 if(isWifiAvail) {
-    startPackageDownloading()
+    startPackageDownloading();
 } else {
-    informUser()
+    informUser();
 }
 ```
 
 Validate if there is internet connection through mobile data:
 ```JAVA
-boolean isMobileDataOn = networkValidator.isCellularAvailable()
+boolean isMobileDataOn = networkValidator.isCellularAvailable();
 
 if(isMobileDataOn) {
-    connectToServer()
+    connectToServer();
 } else {
-    disconnectFromServer()
+    disconnectFromServer();
 }
 ```
 
 Validate if airplane mode is turned on:
 ```JAVA
-boolean isOnAirplane = networkValidator.isAirplaneModeActive()
+boolean isOnAirplane = networkValidator.isAirplaneModeActive();
 
 if(isOnAirplane) { 
-    disconnectFromServer()
+    disconnectFromServer();
 } else {
-    doSomethingRemotely()
+    doSomethingRemotely();
 }
 ```
 
@@ -280,7 +282,7 @@ NetworkValidator networkValidator = new NetworkValidator(this);
 
 networkValidator.setOnNetworkChangedListener((isOnline, network) -> { 
   if(isOnline) {
-      contactRemoteServer()
+      contactRemoteServer();
   }
 }
 ```
@@ -289,7 +291,7 @@ To listen for airplane mode changes, set an `OnAirplaneModeSwitchListener` insta
 ```JAVA
 networkValidator.setOnAirplaneModeSwitchListener(turnedOn -> {
   if(turnedOn) {
-	pauseRemoteConnection()
+	pauseRemoteConnection();
   }
 }
 ```
@@ -319,7 +321,8 @@ Contributors are welcome!
 ***NOTE:*** This repository is split into two branches:
 - [main](https://github.com/IODevBlue/NetworkValidator/tree/main) branch
 - [development](https://github.com/IODevBlue/NetworkValidator/tree/development) branch
-  All developing implementations and proposed changes are pushed to the [development](https://github.com/IODevBlue/NetworkValidator/tree/development) branch and finalized updates are pushed to the [main](https://github.com/IODevBlue/NetworkValidator/tree/main) branch.
+
+All developing implementations and proposed changes are pushed to the [development](https://github.com/IODevBlue/NetworkValidator/tree/development) branch and finalized updates are pushed to the [main](https://github.com/IODevBlue/NetworkValidator/tree/main) branch.
 
 To note if current developments are being made, there would be more commits in the [development](https://github.com/IODevBlue/NetworkValidator/tree/development) branch than in the [main](https://github.com/IODevBlue/NetworkValidator/tree/main) branch.
 
